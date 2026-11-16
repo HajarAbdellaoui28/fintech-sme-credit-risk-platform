@@ -1,0 +1,23 @@
+seed: 42
+split: [0.6, 0.2, 0.2]
+training:
+  optuna_trials: 10
+  tuning_sample_limit: 100000
+  threads: 2
+  calibration: sigmoid_oof
+  bootstrap_repeats: 200
+decision:
+  grade_boundaries: [0.02, 0.05, 0.10, 0.20, 0.35]
+  false_negative_cost: 10.0
+  false_positive_cost: 1.0
+drift:
+  minimum_rows: 200
+  drift_share: 0.30
+  numeric_method: wasserstein
+  numeric_threshold: 0.1
+  categorical_method: jensenshannon
+  categorical_threshold: 0.1
+promotion:
+  maximum_ap_drop: 0.01
+  maximum_brier_increase: 0.01
+  maximum_cost_increase: 0.05

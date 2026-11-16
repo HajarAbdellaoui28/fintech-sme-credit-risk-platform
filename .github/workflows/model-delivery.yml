@@ -1,0 +1,46 @@
+name: Controlled model delivery
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        type: choice
+        options: [sme, bankruptcy_full, credit]
+        required: true
+      action:
+        type: choice
+        options: [train-candidate, promote, rollback]
+        required: true
+      candidate_path:
+        type: string
+        description: Local candidate path for approved promotion
+permissions:
+  contents: read
+jobs:
+  model:
+    runs-on: [self-hosted, Windows, fintech-local]
+    environment: model-approval
+    env:
+      FINTECH_TASK: ${{ inputs.task }}
+      FINTECH_ACTION: ${{ inputs.action }}
+      FINTECH_CANDIDATE: ${{ inputs.candidate_path }}
+      ADMIN_TOKEN: ${{ secrets.FINTECH_ADMIN_TOKEN }}
+      FINTECH_WORKSPACE: ${{ vars.FINTECH_WORKSPACE }}
+    steps:
+      - name: Candidate, promotion or rollback on configured runner
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:FINTECH_WORKSPACE)) {
+            throw 'Configure FINTECH_WORKSPACE to the operator-provisioned project outside the runner checkout.'
+          }
+          $taskWorkspace = (Resolve-Path -LiteralPath $env:FINTECH_WORKSPACE).Path
+          if (-not (Test-Path -LiteralPath (Join-Path $taskWorkspace '.venv\Scripts\python.exe'))) {
+            throw 'The configured project environment is missing; run scripts/bootstrap.ps1 first.'
+          }
+          Set-Location -LiteralPath $taskWorkspace
+          if ($env:FINTECH_ACTION -eq 'train-candidate') {
+            .\.venv\Scripts\fintech.exe retrain --task $env:FINTECH_TASK
+          } else {
+            .\.venv\Scripts\python.exe scripts/manage_model.py --action $env:FINTECH_ACTION --task $env:FINTECH_TASK --candidate $env:FINTECH_CANDIDATE
+          }
+          if ($LASTEXITCODE -ne 0) { throw 'Model delivery failed; champion must be inspected before retrying.' }

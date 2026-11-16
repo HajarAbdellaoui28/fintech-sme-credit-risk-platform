@@ -1,0 +1,21 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - run: pip install -c constraints.txt -e '.[mlops,spark,dev]'
+      - run: ruff check . && ruff format --check .
+      - run: pytest --cov=fintech_risk --cov-report=xml
+      - run: bandit -r src dashboard scripts -ll
+      - run: pip-audit --skip-editable
+      - run: docker build --target runtime -t fintech-ci:${{ github.sha }} .
+      - run: docker run --rm fintech-ci:${{ github.sha }} python -c "from fintech_risk.api import app; assert '/predict/sme' in app.openapi()['paths']"
+  # Full datasets and retraining are intentionally absent from pull-request CI.

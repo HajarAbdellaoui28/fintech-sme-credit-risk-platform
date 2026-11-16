@@ -1,0 +1,322 @@
+{
+  "Attr1": {
+    "definition": "Net profit / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr2": {
+    "definition": "Total liabilities / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr3": {
+    "definition": "Working capital / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr4": {
+    "definition": "Current assets / short-term liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr5": {
+    "definition": "[(Cash + short-term securities + receivables - short-term liabilities) / (operating expenses - depreciation)] * 365",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr6": {
+    "definition": "Retained earnings / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr7": {
+    "definition": "EBIT / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr8": {
+    "definition": "Book value of equity / total liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr9": {
+    "definition": "Sales / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr10": {
+    "definition": "Equity / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr11": {
+    "definition": "(Gross profit + extraordinary items + financial expenses) / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr12": {
+    "definition": "Gross profit / short-term liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr13": {
+    "definition": "(Gross profit + depreciation) / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr14": {
+    "definition": "(Gross profit + interest) / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr15": {
+    "definition": "(Total liabilities * 365) / (gross profit + depreciation)",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr16": {
+    "definition": "(Gross profit + depreciation) / total liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr17": {
+    "definition": "Total assets / total liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr18": {
+    "definition": "Gross profit / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr19": {
+    "definition": "Gross profit / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr20": {
+    "definition": "(Inventory * 365) / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr21": {
+    "definition": "Sales (n) / sales (n-1)",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr22": {
+    "definition": "Profit on operating activities / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr23": {
+    "definition": "Net profit / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr24": {
+    "definition": "Gross profit (in 3 years) / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr25": {
+    "definition": "(Equity - share capital) / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr26": {
+    "definition": "(Net profit + depreciation) / total liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr27": {
+    "definition": "Profit on operating activities / financial expenses",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr28": {
+    "definition": "Working capital / fixed assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr29": {
+    "definition": "Logarithm of total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr30": {
+    "definition": "(Total liabilities - cash) / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr31": {
+    "definition": "(Gross profit + interest) / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr32": {
+    "definition": "(Current liabilities * 365) / cost of products sold",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr33": {
+    "definition": "Operating expenses / short-term liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr34": {
+    "definition": "Operating expenses / total liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr35": {
+    "definition": "Profit on sales / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr36": {
+    "definition": "Total sales / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr37": {
+    "definition": "(Current assets - inventories) / long-term liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr38": {
+    "definition": "Constant capital / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr39": {
+    "definition": "Profit on sales / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr40": {
+    "definition": "(Current assets - inventory - receivables) / short-term liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr41": {
+    "definition": "Total liabilities / ((profit on operating activities + depreciation) * (12/365))",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr42": {
+    "definition": "Profit on operating activities / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr43": {
+    "definition": "Receivables rotation + inventory turnover in days",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr44": {
+    "definition": "(Receivables * 365) / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr45": {
+    "definition": "Net profit / inventory",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr46": {
+    "definition": "(Current assets - inventory) / short-term liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr47": {
+    "definition": "(Inventory * 365) / cost of products sold",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr48": {
+    "definition": "EBITDA (profit on operating activities - depreciation) / total assets [UCI wording]",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr49": {
+    "definition": "EBITDA (profit on operating activities - depreciation) / sales [UCI wording]",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr50": {
+    "definition": "Current assets / total liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr51": {
+    "definition": "Short-term liabilities / total assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr52": {
+    "definition": "(Short-term liabilities * 365) / cost of products sold",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr53": {
+    "definition": "Equity / fixed assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr54": {
+    "definition": "Constant capital / fixed assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr55": {
+    "definition": "Working capital",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr56": {
+    "definition": "(Sales - cost of products sold) / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr57": {
+    "definition": "(Current assets - inventory - short-term liabilities) / (sales - gross profit - depreciation)",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr58": {
+    "definition": "Total costs / total sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Profitability and coverage"
+  },
+  "Attr59": {
+    "definition": "Long-term liabilities / equity",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Liquidity and capital"
+  },
+  "Attr60": {
+    "definition": "Sales / inventory",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr61": {
+    "definition": "Sales / receivables",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr62": {
+    "definition": "(Short-term liabilities * 365) / sales",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr63": {
+    "definition": "Sales / short-term liabilities",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  },
+  "Attr64": {
+    "definition": "Sales / fixed assets",
+    "source": "UCI dataset 365, original order X1..X64",
+    "category": "Activity and turnover"
+  }
+}

@@ -1,0 +1,78 @@
+name: fintech-sme
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: fintech
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: fintech
+    ports: ["127.0.0.1:5433:5432"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-databases.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fintech -d fintech"]
+      interval: 5s
+      retries: 12
+    mem_limit: 512m
+    restart: unless-stopped
+  mlflow:
+    image: fintech-sme-runtime:local
+    build: {context: ., target: runtime}
+    environment:
+      MLFLOW_SERVER_ENABLE_JOB_EXECUTION: "false"
+      MLFLOW_SERVER_JOB_ENABLE_PERIODIC_TASKS: "false"
+      MLFLOW_DISABLE_AGENT_HINT: "1"
+      OMP_NUM_THREADS: "2"
+      OPENBLAS_NUM_THREADS: "2"
+    command: ["mlflow", "server", "--backend-store-uri", "postgresql+psycopg://fintech:${POSTGRES_PASSWORD}@postgres:5432/mlflow", "--artifacts-destination", "/app/artifacts/mlflow", "--serve-artifacts", "--host", "0.0.0.0", "--port", "5000", "--allowed-hosts", "localhost:5001,127.0.0.1:5001,mlflow:5000,localhost:5000", "--workers", "1"]
+    ports: ["127.0.0.1:5001:5000"]
+    volumes: ["./artifacts:/app/artifacts"]
+    depends_on: {postgres: {condition: service_healthy}}
+    mem_limit: 1536m
+    restart: unless-stopped
+  api:
+    image: fintech-sme-runtime:local
+    build: {context: ., target: runtime}
+    command: ["sh", "-c", "alembic upgrade head && uvicorn fintech_risk.api:app --host 0.0.0.0 --port 8000 --no-access-log"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://fintech:${POSTGRES_PASSWORD}@postgres:5432/fintech
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN in .env}
+    ports: ["127.0.0.1:8000:8000"]
+    volumes:
+      - ./artifacts:/app/artifacts
+      - ./reports/generated:/app/reports/generated
+    depends_on: {postgres: {condition: service_healthy}, mlflow: {condition: service_started}}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,json; r=json.load(urllib.request.urlopen('http://localhost:8000/health')); assert r['status']=='ready'"]
+      interval: 10s
+      start_period: 90s
+      retries: 12
+    mem_limit: 1536m
+    restart: unless-stopped
+  dashboard:
+    image: fintech-sme-runtime:local
+    build: {context: ., target: runtime}
+    command: ["streamlit", "run", "dashboard/app.py", "--server.address=0.0.0.0", "--server.port=8501", "--server.headless=true", "--browser.gatherUsageStats=false"]
+    environment: {API_URL: "http://api:8000", MLFLOW_PUBLIC_URL: "http://localhost:5001"}
+    ports: ["127.0.0.1:8501:8501"]
+    depends_on: {api: {condition: service_healthy}}
+    mem_limit: 768m
+    restart: unless-stopped
+  training:
+    profiles: ["training"]
+    image: fintech-sme-training:local
+    build: {context: ., target: training}
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      SPARK_LOCAL_IP: 127.0.0.1
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+      - ./reports/generated:/app/reports/generated
+      - ./configs:/app/configs
+    mem_limit: 5g
+    cpus: 2
+volumes:
+  postgres_data:

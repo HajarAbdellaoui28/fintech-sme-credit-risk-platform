@@ -1,0 +1,101 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: fintech prepare
+    deps:
+    - path: data/raw/polish
+      hash: md5
+      md5: f79902302b23862237ba3b334497d0cc.dir
+      size: 21319380
+      nfiles: 5
+    - path: data/raw/sba
+      hash: md5
+      md5: fb230b65796f3c4d6815ce8fdef1c2c9.dir
+      size: 211605896
+      nfiles: 9
+    - path: src/fintech_risk/data.py
+      hash: md5
+      md5: 014f7055962a6232b73983546a2fd90c
+      size: 10997
+    - path: src/fintech_risk/features.py
+      hash: md5
+      md5: b468da2e9bda4af0a84d56b71b50157f
+      size: 4236
+    params:
+      params.yaml:
+        seed: 42
+        split:
+        - 0.6
+        - 0.2
+        - 0.2
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 8d6dbf09c31fda7e8a1e7f00f745149b.dir
+      size: 71861466
+      nfiles: 4
+    - path: reports/generated/polish_split.json
+      hash: md5
+      md5: 1904a89240d17e59bb67c51e6b996ce5
+      size: 449
+    - path: reports/generated/sba_split.json
+      hash: md5
+      md5: 83d2da6b5be3cedaecda23752054bbaa
+      size: 875
+  train:
+    cmd: fintech pipeline-train
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 8d6dbf09c31fda7e8a1e7f00f745149b.dir
+      size: 71861466
+      nfiles: 4
+    - path: src/fintech_risk/models.py
+      hash: md5
+      md5: 7bace03e44a662553b6d6c93b01c711c
+      size: 20487
+    - path: src/fintech_risk/pipeline.py
+      hash: md5
+      md5: bb73de9804b66f80d477446f396ca524
+      size: 2826
+    - path: src/fintech_risk/registry.py
+      hash: md5
+      md5: a8e905cff3279585307a4dccf0fa0e24
+      size: 8386
+    params:
+      params.yaml:
+        decision:
+          grade_boundaries:
+          - 0.02
+          - 0.05
+          - 0.1
+          - 0.2
+          - 0.35
+          false_negative_cost: 10.0
+          false_positive_cost: 1.0
+        seed: 42
+        training:
+          optuna_trials: 10
+          tuning_sample_limit: 100000
+          threads: 2
+          calibration: sigmoid_oof
+          bootstrap_repeats: 200
+    outs:
+    - path: data/model-snapshots
+      hash: md5
+      md5: ba51160a032d5ae578801ffb081e4e5f.dir
+      size: 10441697
+      nfiles: 28
+  compare:
+    cmd: fintech compare-snapshots
+    deps:
+    - path: data/model-snapshots
+      hash: md5
+      md5: ba51160a032d5ae578801ffb081e4e5f.dir
+      size: 10441697
+      nfiles: 28
+    outs:
+    - path: reports/generated/polish_comparison.json
+      hash: md5
+      md5: 0f2b180b2a857297f516ebcda328fcb0
+      size: 1571

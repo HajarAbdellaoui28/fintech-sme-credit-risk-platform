@@ -1,0 +1,33 @@
+stages:
+  prepare:
+    cmd: fintech prepare
+    deps:
+      - data/raw/sba
+      - data/raw/polish
+      - src/fintech_risk/data.py
+      - src/fintech_risk/features.py
+    params: [seed, split]
+    outs:
+      - data/processed
+    metrics:
+      - reports/generated/polish_split.json:
+          cache: false
+      - reports/generated/sba_split.json:
+          cache: false
+  train:
+    cmd: fintech pipeline-train
+    deps:
+      - data/processed
+      - src/fintech_risk/models.py
+      - src/fintech_risk/registry.py
+      - src/fintech_risk/pipeline.py
+    params: [training, decision, seed]
+    outs:
+      - data/model-snapshots
+  compare:
+    cmd: fintech compare-snapshots
+    deps:
+      - data/model-snapshots
+    metrics:
+      - reports/generated/polish_comparison.json:
+          cache: false

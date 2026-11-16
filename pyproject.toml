@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=84.1,<85"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fintech-sme-risk"
+version = "0.1.0"
+description = "Three independent SME risk models and reproducible local MLOps"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "numpy>=1.26,<2", "pandas>=2.2,<3", "scipy>=1.13,<2",
+  "scikit-learn>=1.6,<1.8", "xgboost>=2.1,<3.1; sys_platform != 'linux'",
+  "xgboost-cpu==3.0.5; sys_platform == 'linux'", "optuna>=4,<5",
+  "shap>=0.46,<0.50", "matplotlib>=3.9,<4", "pyarrow>=23.0.1,<25",
+  "fastapi>=0.115,<1", "uvicorn>=0.30,<1", "pydantic>=2.9,<3",
+  "pydantic-settings>=2.5,<3", "httpx>=0.27,<1", "python-multipart>=0.0.18",
+  "streamlit>=1.40,<2", "plotly>=5.24,<7", "reportlab>=4.2,<5",
+  "sqlalchemy>=2.0,<3", "psycopg[binary]>=3.2,<4", "alembic>=1.14,<2",
+  "pyyaml>=6,<7", "joblib>=1.4,<2", "pandera[pandas]>=0.24,<0.28",
+]
+
+[project.optional-dependencies]
+mlops = ["mlflow>=3.1,<4", "dvc>=3.60,<4", "evidently>=0.7,<0.8"]
+spark = ["pyspark==3.5.8"]
+dev = ["pytest>=8,<10", "pytest-cov>=6,<8", "ruff>=0.12,<1", "bandit>=1.8,<2", "pip-audit>=2.8,<3", "pypdf>=5,<7", "pymupdf>=1.25,<2", "playwright>=1.50,<2"]
+
+[project.scripts]
+fintech = "fintech_risk.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["spark: requires Java and PySpark", "integration: requires local services"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]
