@@ -35,7 +35,7 @@ styles["BodyText"].leading = 14
 
 
 def paragraph(text, style="BodyText"):
-    return Paragraph(escape(str(text)), styles[style])
+    return Paragraph(escape(str(text)).replace("\n", "<br/>"), styles[style])
 
 
 def table(rows, widths=None):
@@ -238,6 +238,14 @@ if latency.exists():
             "Mesures à chaud sur HTTP local avec connexion persistante, 1 000 requêtes par cas. La route SME comprend SHAP mis en cache ; les routes avancées excluent SHAP de la prédiction rapide. La cible de 100 ms est un résultat à vérifier par scénario, sans garantie de service ni revendication de latence à froid."
         ),
     ]
+    missed = [
+        names[task] + f" (concurrence {workers})"
+        for task, item in measured["tasks"].items()
+        for workers, result in item["api"].items()
+        if not result["target_p95_below_100ms"]
+    ]
+    if missed:
+        flow.append(paragraph("Cible API p95 < 100 ms non atteinte : " + "; ".join(missed) + "."))
 else:
     flow.append(
         paragraph(
