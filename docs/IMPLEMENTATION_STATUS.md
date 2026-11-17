@@ -54,9 +54,59 @@ Polish complet. Le [rapport final](FINAL_REPORT.md) détaille résultats et limi
   annuelle ni validation pour une décision de prêt préalable.
 - Temporalité d'Attr24 non certifiée ; pas d'identifiants de firme Polish.
 - Licence exacte SBA à consolider avant redistribution des fichiers fournis.
-- **PYSEC-2026-2447 / DiskCache 5.6.3 : aucun correctif proposé ; le contrôle CI
-  strict des dépendances reste en échec.** L'avis n'est pas ignoré.
+- **PYSEC-2026-2447 / DiskCache 5.6.3 : aucun correctif publié.** L'audit strict
+  reste en échec ; le patch du 17 novembre propose une exception exacte, bornée
+  et expirante dans le contrôle CI, avec conservation de tous les constats bruts.
 - Le remote DVC est local et ne protège pas contre la perte du même disque.
 
 Preuves : `reports/generated/`. Les résultats synthétiques des tests ne sont
 jamais substitués aux évaluations sur les jeux réels.
+
+## Correctif CI sécurité — 17 novembre 2026
+
+- Cause identifiée et reproduite dans une `.venv` jetable : l'installation
+  contrainte de l'éditable ne remplace pas le setuptools 79.0.1 déjà présent ; le
+  bootstrap explicite installe 84.2.1. Le paquet de build isolé ne corrige pas
+  l'environnement audité. La provenance précise du 79.0.1 du runner n'a pas été
+  confirmée à partir de journaux GitHub distants.
+- CI : bootstrap pip/setuptools explicite, contraintes de build, assertion de la
+  version installée, `pip check`, cache pip indexé par les fichiers de dépendances,
+  état DVC privé dans `runner.temp`, audit brut et décision conservés en artefact.
+- PyPI vérifié : DVC 3.67.1, dvc-data 3.18.3, DiskCache 5.6.3 sont toujours les
+  dernières versions publiées. Leurs pins sont conservés ; aucun correctif
+  compatible disponible n'a été identifié.
+- Exception **proposée dans le patch** : uniquement diskcache 5.6.3 /
+  PYSEC-2026-2447, jusqu'au 17 décembre 2026 à 00:00 UTC. Publication/fusion du
+  patch à examiner par le mainteneur. Ce n'est pas une correction de DiskCache.
+  Les tests prouvent qu'un autre paquet/version/avis, un correctif disponible ou
+  une politique expirée bloque le contrôle. Aucun avis setuptools n'est accepté.
+- Exécuté sous Windows : **39 tests réussis**, `pip check` réussi, Ruff réussi,
+  Bandit sans problème moyen/élevé. Aucun test ignoré ou désactivé.
+- Exécuté dans un conteneur Linux éphémère : **10 tests réussis** pour la politique
+  et le cycle DVC, bootstrap et `pip check` réussis, permissions POSIX privées
+  vérifiées. Cela ne constitue pas une exécution distante GitHub Actions.
+- Workflow modifié vérifié par **actionlint 1.7.12 : sortie 0**.
+- Audit réel : setuptools 84.2.1 sans avis ; un seul avis DiskCache, présent deux
+  fois dans la réponse du fournisseur. Audit strict : sortie 1. Contrôle avec la
+  proposition d'exception : sortie 0, état explicite `pass_with_exception`.
+- DVC réel : ajout, exécution d'une petite étape de copie, push, suppression des
+  seuls objets jetables, pull et reproduction inchangée vérifiés en tests. Sur
+  le projet : `dvc status` à jour, `dvc repro --dry` sans commande exécutée et
+  `dvc status --cloud` synchronisé. `dvc.yaml`, `dvc.lock`, paramètres et code
+  d'entraînement restent inchangés ; les empreintes des trois champions version 1
+  sont vérifiées. Aucun champion n'a été réentraîné.
+- Configuration locale uniquement : état DVC déplacé par configuration vers
+  `storage/dvc-site-cache` ; ancien cache conservé, ACL globales non modifiées.
+  Les écrivains autorisés dans le projet restent une limite de confiance explicite.
+- Aucun push, commit du patch, déploiement ou exécution GitHub distante effectué.
+
+Preuves nouvelles dans `reports/generated/` : `ci-setuptools-repro.json`,
+`ci-security-upstream.json`, `ci-security-audit.json` et sa décision,
+`ci-security-strict-audit.json` et sa décision, `ci-security-tests.xml`,
+`ci-security-linux-tests.xml`, `ci-security-bandit.json`.
+Synthèse : `ci-security-verification.json` ; validation du workflow :
+`ci-security-actionlint.log`.
+
+L'exposition, les mesures de réduction et le risque résiduel figurent dans
+[SECURITY.md](SECURITY.md). L'audit strict demeure l'option sans acceptation de
+l'exception proposée.

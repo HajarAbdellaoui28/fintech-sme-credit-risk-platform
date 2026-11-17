@@ -22,7 +22,7 @@ dependencies = [
 [project.optional-dependencies]
 mlops = ["mlflow>=3.1,<4", "dvc>=3.60,<4", "evidently>=0.7,<0.8"]
 spark = ["pyspark==3.5.8"]
-dev = ["pytest>=8,<10", "pytest-cov>=6,<8", "ruff>=0.12,<1", "bandit>=1.8,<2", "pip-audit>=2.8,<3", "pypdf>=5,<7", "pymupdf>=1.25,<2", "playwright>=1.50,<2"]
+dev = ["setuptools>=84.1,<85", "pytest>=8,<10", "pytest-cov>=6,<8", "ruff>=0.12,<1", "bandit>=1.8,<2", "pip-audit>=2.8,<3", "pypdf>=5,<7", "pymupdf>=1.25,<2", "playwright>=1.50,<2"]
 
 [project.scripts]
 fintech = "fintech_risk.cli:main"

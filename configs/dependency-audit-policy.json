@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "exceptions": [
+    {
+      "package": "diskcache",
+      "version": "5.6.3",
+      "advisory": "PYSEC-2026-2447",
+      "expires": "2026-12-17",
+      "owner": "Project maintainer; acceptance proposed for review with this patch",
+      "reason": "Latest DVC 3.67.1 requires dvc-data >=3.18.2,<3.19.0; latest dvc-data 3.18.3 requires diskcache >=5.2.1. PyPI has no release newer than 5.6.3 as verified on 2026-11-17. See docs/SECURITY.md for cache-write prerequisite, exposure, mitigation and residual risk."
+    }
+  ]
+}
