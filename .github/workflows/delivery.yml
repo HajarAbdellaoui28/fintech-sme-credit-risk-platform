@@ -1,4 +1,5 @@
 name: Controlled image delivery
+
 on:
   workflow_dispatch:
     inputs:
@@ -6,26 +7,40 @@ on:
         type: boolean
         default: false
         description: Publish versioned images to GHCR after explicit authorization
+
 permissions:
   contents: read
   packages: write
+
 jobs:
   image:
     runs-on: ubuntu-latest
     environment: delivery-approval
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Define lowercase image name
+        run: |
+          IMAGE_NAME="ghcr.io/${GITHUB_REPOSITORY,,}:${GITHUB_SHA}"
+          echo "IMAGE_NAME=$IMAGE_NAME" >> "$GITHUB_ENV"
+
       - name: Build versioned image
-        run: docker build --target runtime -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
+        run: docker build --target runtime -t "$IMAGE_NAME" .
+
       - name: Smoke image imports and contracts
-        run: docker run --rm ghcr.io/${{ github.repository }}:${{ github.sha }} python -c "from fintech_risk.api import app; assert len(app.routes)>10"
+        run: docker run --rm "$IMAGE_NAME" python -c "from fintech_risk.api import app; assert len(app.routes)>10"
+
       - if: inputs.publish
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - if: inputs.publish
-        run: docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+      - name: Publish image to GHCR
+        if: inputs.publish
+        run: docker push "$IMAGE_NAME"
+
       - name: Deployment handoff
         run: echo 'Image validated. External staging/production deployment requires configured target and authorization; see docs/DEPLOYMENT.md.'
